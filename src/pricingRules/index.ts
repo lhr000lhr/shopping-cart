@@ -1,4 +1,4 @@
-import { Item, ItemSKUOption, creatATV } from '../items'
+import { Item, ItemSKUOption, creatATV, creatIpad, creatMBP, creatVGA } from '../items'
 
 interface pricingRule {
   (items: Item[]): {
@@ -9,17 +9,17 @@ interface pricingRule {
 
 export const appleTVRule: pricingRule = (items) => {
   // - we're going to have a 3 for 2 deal on Apple TVs. For example, if you buy 3 Apple TVs, you will pay the price of 2 only
-  const appleTVs: Item[] = []
+  const discountItems: Item[] = []
   const countedItem: Item[] = items.map((item) => {
     if (item.sku === ItemSKUOption.ATV) {
       item.isChecked = true
-      appleTVs.push(item)
+      discountItems.push(item)
     }
     return item
   })
 
   const appleTV = creatATV()
-  const total = appleTVs.length
+  const total = discountItems.length
   const discountedPrice = Math.floor(total / 3) * 2 * appleTV.price
   const restPrice = (total % 3) * appleTV.price
   const currentPrice = discountedPrice + restPrice
@@ -30,20 +30,56 @@ export const appleTVRule: pricingRule = (items) => {
   }
 }
 
-export const ipadRule: pricingRule = (item) => {
-  let items: Item[]
+export const ipadRule: pricingRule = (items) => {
+  // - the brand new Super iPad will have a bulk discounted applied, where the price will drop to $499.99 each, if someone buys more than 4
+
+  const discountItems: Item[] = []
+  const countedItem: Item[] = items.map((item) => {
+    if (item.sku === ItemSKUOption.IPD) {
+      item.isChecked = true
+      discountItems.push(item)
+    }
+    return item
+  })
+
+  const iPad = creatIpad()
+  const total = discountItems.length
+  const currentPrice = total > 4 ? total * 499.99 : total * iPad.price
 
   return {
-    items,
-    currentPrice: 0,
+    items: countedItem,
+    currentPrice,
   }
 }
 
-export const macbookRule: pricingRule = (item) => {
-  let items: Item[]
+export const macbookRule: pricingRule = (items) => {
+  // - we will bundle in a free VGA adapter free of charge with every MacBook Pro sold
+
+  const macbookItems: Item[] = []
+  const discountVGAItems: Item[] = []
+
+  const countedItem: Item[] = items.map((item) => {
+    if (item.sku === ItemSKUOption.MBP) {
+      item.isChecked = true
+      macbookItems.push(item)
+    } else if (item.sku === ItemSKUOption.VGA) {
+      item.isChecked = true
+      discountVGAItems.push(item)
+    }
+    return item
+  })
+
+  const macbook = creatMBP()
+  const vga = creatVGA()
+
+  const totalMacbook = macbookItems.length
+  const totalVGA = discountVGAItems.length
+  const currentPrice =
+    Math.max(0, totalVGA - totalMacbook) * vga.price +
+    totalMacbook * macbook.price
 
   return {
-    items,
-    currentPrice: 0,
+    items: countedItem,
+    currentPrice,
   }
 }

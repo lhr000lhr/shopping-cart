@@ -1,5 +1,5 @@
 import { creatATV, creatIpad, creatMBP, creatVGA } from '../items'
-import { appleTVRule } from './index'
+import { appleTVRule, ipadRule, macbookRule } from './index'
 
 describe('Pricing rules', () => {
   describe('Apple TV rules', () => {
@@ -31,6 +31,88 @@ describe('Pricing rules', () => {
           checkedAppleTV,
         ],
         currentPrice: checkedAppleTV.price * 3,
+      })
+    })
+  })
+
+  describe('iPad rules', () => {
+    test('buy less than 4 items', () => {
+      const iPad = creatIpad()
+      const checkedIPad = creatIpad()
+      checkedIPad.isChecked = true
+      expect(ipadRule([iPad, iPad])).toEqual({
+        items: [checkedIPad, checkedIPad],
+        currentPrice: checkedIPad.price * 2,
+      })
+      expect(ipadRule([iPad, iPad, iPad])).toEqual({
+        items: [checkedIPad, checkedIPad, checkedIPad],
+        currentPrice: checkedIPad.price * 3,
+      })
+      expect(ipadRule([iPad, iPad, iPad, iPad])).toEqual({
+        items: [checkedIPad, checkedIPad, checkedIPad, checkedIPad],
+        currentPrice: checkedIPad.price * 4,
+      })
+    })
+
+    test('buy more than 4 items', () => {
+      const iPad = creatIpad()
+      const checkedIPad = creatIpad()
+      const discountPrice = 499.99
+      checkedIPad.isChecked = true
+
+      expect(ipadRule([iPad, iPad, iPad, iPad, iPad])).toEqual({
+        items: [
+          checkedIPad,
+          checkedIPad,
+          checkedIPad,
+          checkedIPad,
+          checkedIPad,
+        ],
+        currentPrice: discountPrice * 5,
+      })
+    })
+  })
+
+  describe('Macbook rules', () => {
+    test('buy 1 Macbook and 1 VGA', () => {
+      const macbook = creatMBP()
+      const checkedMacbook = creatMBP()
+      checkedMacbook.isChecked = true
+      const vga = creatVGA()
+      const checkedVGA = creatVGA()
+      checkedVGA.isChecked = true
+
+      expect(macbookRule([macbook, vga])).toEqual({
+        items: [checkedMacbook, checkedVGA],
+        currentPrice: checkedMacbook.price * 1,
+      })
+    })
+
+    test('buy 1 Macbook and 2 VGA', () => {
+      const macbook = creatMBP()
+      const checkedMacbook = creatMBP()
+      checkedMacbook.isChecked = true
+      const vga = creatVGA()
+      const checkedVGA = creatVGA()
+      checkedVGA.isChecked = true
+
+      expect(macbookRule([macbook, vga, vga])).toEqual({
+        items: [checkedMacbook, checkedVGA, checkedVGA],
+        currentPrice: checkedMacbook.price * 1 + checkedVGA.price * 1,
+      })
+    })
+
+    test('buy 2 Macbook and 2 VGA', () => {
+      const macbook = creatMBP()
+      const checkedMacbook = creatMBP()
+      checkedMacbook.isChecked = true
+      const vga = creatVGA()
+      const checkedVGA = creatVGA()
+      checkedVGA.isChecked = true
+
+      expect(macbookRule([macbook, macbook, vga, vga])).toEqual({
+        items: [checkedMacbook, checkedMacbook, checkedVGA, checkedVGA],
+        currentPrice: checkedMacbook.price * 2,
       })
     })
   })
