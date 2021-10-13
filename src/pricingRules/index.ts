@@ -1,10 +1,19 @@
-import { Item, ItemSKUOption, creatATV, creatIpad, creatMBP, creatVGA } from '../items'
+import {
+  Item,
+  ItemSKUOption,
+  creatATV,
+  creatIpad,
+  creatMBP,
+  creatVGA,
+} from '../items'
 
-interface pricingRule {
-  (items: Item[]): {
-    items: Item[]
-    currentPrice: number
-  }
+export interface pricingRule {
+  (items: Item[]): pricingResult
+}
+
+export type pricingResult = {
+  items: Item[]
+  currentPrice: number
 }
 
 export const appleTVRule: pricingRule = (items) => {
