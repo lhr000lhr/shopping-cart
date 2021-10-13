@@ -1,1 +1,3 @@
-console.log("123");
+import { createItem, ItemSKUOption } from './items'
+
+console.log(createItem(ItemSKUOption.ATV))
