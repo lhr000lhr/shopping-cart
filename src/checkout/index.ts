@@ -1,6 +1,6 @@
 import { Item } from '../items'
 import { pricingRule } from '../pricingRules'
-import calculate from './calculate'
+import calculate from './calculator'
 
 export default class Checkout {
   pricingRules: pricingRule[]

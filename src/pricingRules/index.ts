@@ -16,6 +16,8 @@ export type pricingResult = {
   currentPrice: number
 }
 
+export const discountIPadPrice = 499.99
+
 export const appleTVRule: pricingRule = (items) => {
   // - we're going to have a 3 for 2 deal on Apple TVs. For example, if you buy 3 Apple TVs, you will pay the price of 2 only
   const discountItems: Item[] = []
@@ -53,7 +55,7 @@ export const ipadRule: pricingRule = (items) => {
 
   const iPad = creatIpad()
   const total = discountItems.length
-  const currentPrice = total > 4 ? total * 499.99 : total * iPad.price
+  const currentPrice = total > 4 ? total * discountIPadPrice : total * iPad.price
 
   return {
     items: countedItem,

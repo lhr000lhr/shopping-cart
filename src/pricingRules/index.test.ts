@@ -1,5 +1,5 @@
 import { creatATV, creatIpad, creatMBP, creatVGA } from '../items'
-import { appleTVRule, ipadRule, macbookRule } from './index'
+import { appleTVRule, discountIPadPrice, ipadRule, macbookRule } from './index'
 
 describe('Pricing rules', () => {
   describe('Apple TV rules', () => {
@@ -57,7 +57,6 @@ describe('Pricing rules', () => {
     test('buy more than 4 items', () => {
       const iPad = creatIpad()
       const checkedIPad = creatIpad()
-      const discountPrice = 499.99
       checkedIPad.isChecked = true
 
       expect(ipadRule([iPad, iPad, iPad, iPad, iPad])).toEqual({
@@ -68,7 +67,7 @@ describe('Pricing rules', () => {
           checkedIPad,
           checkedIPad,
         ],
-        currentPrice: discountPrice * 5,
+        currentPrice: discountIPadPrice * 5,
       })
     })
   })
