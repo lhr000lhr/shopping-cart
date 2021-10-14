@@ -23,6 +23,9 @@ npm start
 | ---------- | 
 | ![Case-3][3] | 
 
+| Test cases |
+| ---------- | 
+| ![Case-4][4] | 
 
 
 ## Test
@@ -39,3 +42,4 @@ npm test
 [1]: ./screenshots/index.jpg
 [2]: ./screenshots/start.jpg
 [3]: ./screenshots/test.jpg
+[4]: ./screenshots/test_cases.jpg
